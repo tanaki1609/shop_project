@@ -1,19 +1,36 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ProductSerializer, ProductValidateSerializer, ProductCreateSerializer, ProductUpdateSerializer
-from .models import Product, Category
+from .serializers import ProductSerializer, \
+    ProductCreateSerializer, ProductUpdateSerializer, CategorySerializer, TagSerializer
+from .models import Product, Category, Tag
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
 
 
-@api_view(['GET', 'POST'])
-def product_list_api_view(request):
-    if request.method == 'GET':
-        """ List of objects """
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(data=serializer.data)
-    elif request.method == 'POST':
-        """ Creation of object """
+class TagModelViewSet(ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    pagination_class = PageNumberPagination
+
+
+class CategoryListAPIView(ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = PageNumberPagination
+
+
+class CategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class ProductListCreateAPIView(ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def post(self, request, *args, **kwargs):
         serializer = ProductCreateSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(data=serializer.errors,

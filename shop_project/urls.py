@@ -16,10 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from product import views
+from users import views as user_views
+from .constants import LIST_CREATE_DICT
+from . import swagger
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/test/', views.test_api),
-    path('api/v1/products/', views.product_list_api_view),
+    path('api/v1/products/', views.ProductListCreateAPIView.as_view()),
     path('api/v1/products/<int:id>/', views.product_detail_api_view),
+    path('api/v1/users/registration/', user_views.registration_view),
+    path('api/v1/users/authorization/', user_views.authorization_view),
+    path('api/v1/categories/', views.CategoryListAPIView.as_view()),
+    path('api/v1/categories/<int:pk>/', views.CategoryDetailAPIView.as_view()),
+    path('api/v1/tags/', views.TagModelViewSet.as_view(LIST_CREATE_DICT)),
+    path('api/v1/tags/<int:pk>/', views.TagModelViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update',
+                                                                 'put': 'update', 'delete': 'destroy'})),
 ]
+
+urlpatterns += swagger.urlpatterns
