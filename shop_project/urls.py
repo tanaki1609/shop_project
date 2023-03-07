@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/v1/products/', views.ProductListCreateAPIView.as_view()),
     path('api/v1/products/<int:id>/', views.product_detail_api_view),
     path('api/v1/users/registration/', user_views.registration_view),
-    path('api/v1/users/authorization/', user_views.authorization_view),
+    path('api/v1/users/authorization/', user_views.AuthorizationAPIView.as_view()),
     path('api/v1/categories/', views.CategoryListAPIView.as_view()),
     path('api/v1/categories/<int:pk>/', views.CategoryDetailAPIView.as_view()),
     path('api/v1/tags/', views.TagModelViewSet.as_view(LIST_CREATE_DICT)),
