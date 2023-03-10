@@ -27,12 +27,10 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     tags = TagSerializer(many=True)
     tag_name_list = serializers.SerializerMethodField()
-    filtered_reviews = ReviewSerializer(many=True)
 
     class Meta:
         model = Product
-        fields = 'id name description price quantity is_active tags category category_name tag_name_list ' \
-                 'filtered_reviews'.split()
+        fields = 'id name description price quantity is_active tags category category_name tag_name_list '.split()
         # exclude = ['price', 'name']
 
     def get_tag_name_list(self, obj):
