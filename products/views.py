@@ -8,7 +8,8 @@ from .serializers import ProductSerializer, ProductDetailSerializer
 @api_view(http_method_names=['GET'])
 def product_list_api_view(request):
     # step 1: Collect products from DB (QuerySet)
-    products = Product.objects.filter(is_active=True)
+    products = (Product.objects.select_related('category')
+                .prefetch_related('tags', 'reviews').filter(is_active=True))
 
     # step 2: Reformat QuerySet to list of dictionary (Serializer)
     data = ProductSerializer(products, many=True).data
