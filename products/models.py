@@ -23,8 +23,9 @@ class Tag(AbstractNameModel):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+                                 null=True, blank=True)  # category_id (int) = 1
+    tags = models.ManyToManyField(Tag, blank=True)  # [1,2,3]
     name = models.CharField(max_length=255)
     text = models.TextField(null=True, blank=True)
     price = models.FloatField()
