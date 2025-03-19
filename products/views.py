@@ -8,6 +8,7 @@ from django.db import transaction
 
 @api_view(http_method_names=['GET', 'POST'])
 def product_list_create_api_view(request):
+    print(request.user)
     if request.method == 'GET':
         search = request.query_params.get('search', '')
         # step 1: Collect products from DB (QuerySet)
